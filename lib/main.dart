@@ -31,7 +31,6 @@ class HomePage extends StatelessWidget {
         title: Text("Despesas pessoais"),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
@@ -61,7 +60,6 @@ class HomePage extends StatelessWidget {
                             fontSize: 20),
                       ),
                     ),
-                    //TODO fonte do título 16, bold e cor da data cinza
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -80,6 +78,29 @@ class HomePage extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  TextField(decoration: InputDecoration(labelText: 'Título')),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Valor (R\$)'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          style: TextButton.styleFrom(primary: Colors.purple),
+                          onPressed: () {},
+                          child: Text('Nova Transação')),
+                    ],
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),
