@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
-class TransactionForm extends StatelessWidget {
-  final _titleController = TextEditingController();
-  final _valueController = MoneyMaskedTextController(
-      decimalSeparator: ",", thousandSeparator: ".", leftSymbol: "R\$");
-
+class TransactionForm extends StatefulWidget {
   final void Function(String title, double value) onSubmit;
 
   TransactionForm({this.onSubmit});
+
+  @override
+  _TransactionFormState createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final _titleController = TextEditingController();
+
+  final _valueController = MoneyMaskedTextController(
+      decimalSeparator: ",", thousandSeparator: ".", leftSymbol: "R\$");
 
   _submitForm() {
     final title = _titleController.text;
     final value = double.tryParse(_valueController.text
         .replaceAll("R\$", "")
-        .replaceAll(",", ".")
-        .replaceAll(".", ""));
+        .replaceAll(".", "")
+        .replaceAll(",", "."));
 
     if (title.isEmpty) {
       return;
     }
 
-    onSubmit(title, value);
+    widget.onSubmit(title, value);
   }
 
   @override
