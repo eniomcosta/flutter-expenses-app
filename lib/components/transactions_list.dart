@@ -22,14 +22,15 @@ class TransactionList extends StatelessWidget {
                       margin:
                           EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.purple, width: 2),
+                        border: Border.all(
+                            color: Theme.of(context).primaryColor, width: 2),
                       ),
                       padding: EdgeInsets.all(10),
                       child: Text(
                         NumberFormat.simpleCurrency(locale: "pt_BR")
                             .format(t.value),
                         style: TextStyle(
-                            color: Colors.purple,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
@@ -37,11 +38,8 @@ class TransactionList extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          t.title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
+                        Text(t.title,
+                            style: Theme.of(context).textTheme.headline6),
                         Text(
                           DateFormat('d MMM y').format(t.date),
                           style: TextStyle(color: Colors.grey),
