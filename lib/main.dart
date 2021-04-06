@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'components/transactions_list.dart';
@@ -43,7 +44,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _transactions = [
+  final List<Transaction> _transactions = [
     Transaction(
         id: "t1",
         date: DateTime.now(),
@@ -96,9 +97,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text("Gráfico"),
+              child: Chart(
+                recentTransactions: _transactions,
               ),
             ),
             TransactionList(
