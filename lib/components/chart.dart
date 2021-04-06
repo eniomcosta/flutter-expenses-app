@@ -5,16 +5,27 @@ import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
+  final int daysToConsider;
 
   List<Map<String, Object>> get groupedTransactions {
-    return List.generate(7, (index) {
+    return List.generate(daysToConsider, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
 
       double total = 0.0;
 
-      total = recentTransactions
-          .where((element) => element.date.isSameDate(weekDay))
-          .fold(0.0, (previousValue, element) => element.value);
+      // total = recentTransactions
+      //     .where((element) => element.date.isSameDate(weekDay))
+      //     .fold(0.0, (previousValue, element) => element.value);
+
+      for (var t in recentTransactions) {
+        bool sameDay = t.date.day == weekDay.day;
+        bool sameMonth = t.date.month == weekDay.month;
+        bool sameYear = t.date.year == weekDay.year;
+
+        if (sameDay && sameMonth && sameYear) {
+          total += t.value;
+        }
+      }
 
       return {
         'day': DateFormat.E().format(weekDay)[0],
@@ -23,7 +34,7 @@ class Chart extends StatelessWidget {
     });
   }
 
-  Chart({this.recentTransactions});
+  Chart({this.recentTransactions, this.daysToConsider});
 
   @override
   Widget build(BuildContext context) {

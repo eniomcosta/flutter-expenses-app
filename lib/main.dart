@@ -44,17 +44,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _daysToConsider = 7;
+
   final List<Transaction> _transactions = [
     Transaction(
+        id: "t0",
+        date: DateTime.now().subtract(Duration(days: 33)),
+        title: "Conta do mês passado",
+        value: 100.00),
+    Transaction(
         id: "t1",
-        date: DateTime.now(),
+        date: DateTime.now().subtract(Duration(days: 1)),
         title: "Novo Tênis de Corrida",
         value: 310.76),
     Transaction(
-        id: "t2", date: DateTime.now(), title: "Conta de #01", value: 1211.13),
+        id: "t2",
+        date: DateTime.now().subtract(Duration(days: 2)),
+        title: "Conta #01",
+        value: 1211.13),
     Transaction(
-        id: "t3", date: DateTime.now(), title: "Conta de #02", value: 211.13),
+        id: "t3", date: DateTime.now(), title: "Conta #02", value: 211.13),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions
+        .where((t) => t.date
+            .isAfter(DateTime.now().subtract(Duration(days: _daysToConsider))))
+        .toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = new Transaction(
@@ -95,12 +112,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: Chart(
-                recentTransactions: _transactions,
-              ),
-            ),
+            Chart(
+                recentTransactions: _recentTransactions,
+                daysToConsider: _daysToConsider),
             TransactionList(
               transactions: _transactions,
             ),
