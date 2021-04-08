@@ -12,28 +12,32 @@ class Chart extends StatelessWidget {
     return List.generate(daysToConsider, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
 
-      double daySum = 0.0;
+      //double daySum = 0.0;
 
-      // total = recentTransactions
-      //     .where((element) => element.date.isSameDate(weekDay))
-      //     .fold(0.0, (previousValue, element) => element.value);
+      double daySum = recentTransactions
+          .where((element) => element.date.isSameDate(weekDay))
+          .fold(0.0, (previousValue, element) => element.value);
 
-      for (var t in recentTransactions) {
-        bool sameDay = t.date.day == weekDay.day;
-        bool sameMonth = t.date.month == weekDay.month;
-        bool sameYear = t.date.year == weekDay.year;
+      // for (var t in recentTransactions) {
+      //   bool sameDay = t.date.day == weekDay.day;
+      //   bool sameMonth = t.date.month == weekDay.month;
+      //   bool sameYear = t.date.year == weekDay.year;
 
-        if (sameDay && sameMonth && sameYear) {
-          daySum += t.value;
-        }
-      }
+      //   if (sameDay && sameMonth && sameYear) {
+      //     daySum += t.value;
+      //   }
+      // }
 
       return {
         'day': DateFormat.E("pt_BR").format(weekDay),
         'value': daySum,
-        'percentage': 50.0,
       };
     });
+  }
+
+  double get _weekTotalValue {
+    return groupedTransactions.fold(
+        0.0, (previousValue, element) => previousValue + element['value']);
   }
 
   Chart({this.recentTransactions, this.daysToConsider});
@@ -43,14 +47,21 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactions.map((t) {
-          return ChartBar(
-            label: t['day'],
-            value: t['value'],
-            percentage: t['percentage'],
-          );
-        }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions.map((t) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: t['day'],
+                value: t['value'],
+                percentage: ((t['value'] as double) / _weekTotalValue) * 100,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
