@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
@@ -44,6 +46,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+  }
+
   final _daysToConsider = 7;
 
   final List<Transaction> _transactions = [

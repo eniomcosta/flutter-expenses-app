@@ -1,3 +1,4 @@
+import 'package:expenses/components/chart_bar.dart';
 import 'package:expenses/extension/same_date.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class Chart extends StatelessWidget {
     return List.generate(daysToConsider, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
 
-      double total = 0.0;
+      double daySum = 0.0;
 
       // total = recentTransactions
       //     .where((element) => element.date.isSameDate(weekDay))
@@ -23,13 +24,14 @@ class Chart extends StatelessWidget {
         bool sameYear = t.date.year == weekDay.year;
 
         if (sameDay && sameMonth && sameYear) {
-          total += t.value;
+          daySum += t.value;
         }
       }
 
       return {
-        'day': DateFormat.E().format(weekDay)[0],
-        'value': total,
+        'day': DateFormat.E("pt_BR").format(weekDay),
+        'value': daySum,
+        'percentage': 50.0,
       };
     });
   }
@@ -42,15 +44,13 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: [
-          for (var item in groupedTransactions.reversed)
-            Column(
-              children: [
-                Text(item['value'].toString()),
-                Text(item['day']),
-              ],
-            )
-        ],
+        children: groupedTransactions.map((t) {
+          return ChartBar(
+            label: t['day'],
+            value: t['value'],
+            percentage: t['percentage'],
+          );
+        }).toList(),
       ),
     );
   }
