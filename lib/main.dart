@@ -20,12 +20,13 @@ class ExpensesApp extends StatelessWidget {
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
+            button:
+                TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -81,12 +82,12 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime selectedDate) {
     final newTransaction = new Transaction(
         id: Random().nextDouble().toString(),
         title: title,
         value: value,
-        date: DateTime.now());
+        date: selectedDate);
 
     setState(() {
       _transactions.add(newTransaction);
