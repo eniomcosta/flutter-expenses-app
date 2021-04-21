@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final void Function(Transaction selectedTransaction) onDelete;
 
-  TransactionList({this.transactions});
+  TransactionList({this.transactions, this.onDelete});
 
   _noTransactions(BuildContext context) {
     return Column(
@@ -27,6 +28,29 @@ class TransactionList extends StatelessWidget {
         )
       ],
     );
+  }
+
+  _openRemoveTransactionConfirmation(
+      BuildContext context, Transaction selectedTransaction) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("Confirmação"),
+            content: Text("Deseja realmente remover?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    onDelete(selectedTransaction);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Sim")),
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Não")),
+            ],
+          );
+        });
   }
 
   @override
@@ -61,6 +85,14 @@ class TransactionList extends StatelessWidget {
                       ),
                       subtitle: Text(
                         DateFormat("d MMM y").format(t.date),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).errorColor,
+                        ),
+                        onPressed: () =>
+                            _openRemoveTransactionConfirmation(context, t),
                       ),
                     ),
                   );
